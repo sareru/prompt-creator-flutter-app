@@ -29,5 +29,6 @@ Future<Directory> getPromptCreatorDocumentsDirectory() async {
       await Directory('$path/promptCreatorData').create(recursive: true);
     }
   });
+  print('$path/promptCreatorData');
   return Directory('$path/promptCreatorData');
 }

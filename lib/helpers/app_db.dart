@@ -2,9 +2,6 @@
 
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
-import 'package:flutter/rendering.dart';
-// import 'package:flutter/cupertino.dart';
-// import 'package:path/path.dart';
 import 'package:prompt_creator_flutter_app/helpers/io.dart';
 import 'package:prompt_creator_flutter_app/helpers/prompts.dart';
 
@@ -47,8 +44,24 @@ class AppDb extends _$AppDb {
     return await query.map((row) => row.read(count)).getSingle();
   }
 
+  Future<List<Prompt>> searchPrompts(String term) {
+    print('search');
+    return (select(prompts)
+          ..where((t) => t.prompt.like('%$term%'))
+          ..orderBy([(t) => OrderingTerm.desc(t.createdAt)]))
+        .get();
+  }
+
   Future deleteAllPrompts() async {
     return (delete(prompts)).go();
+  }
+
+  Future<int> deletePrompt(int id) {
+    return (delete(prompts)..where((tbl) => tbl.id.equals(id))).go();
+  }
+
+  Future<bool> updatePrompt(Prompt prompt) {
+    return update(prompts).replace(prompt);
   }
 }
 

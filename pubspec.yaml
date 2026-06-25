@@ -20,6 +20,7 @@ dependencies:
   path: ^1.9.1
   path_provider: ^2.1.5
   path_provider_platform_interface: ^2.1.2
+  flutter_launcher_icons: ^0.14.4
 
 dev_dependencies:
   flutter_test:
@@ -39,3 +40,10 @@ flutter:
   - family: YuseiMagic
     fonts:
       - asset: assets/font/YuseiMagic-Regular.ttf
+
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/icon/icon.png"

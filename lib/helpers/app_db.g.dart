@@ -31,6 +31,15 @@ class $PromptsTable extends Prompts with TableInfo<$PromptsTable, Prompt> {
     requiredDuringInsert: true,
     $customConstraints: 'NOT NULL COLLATE NOCASE',
   );
+  static const VerificationMeta _notesMeta = const VerificationMeta('notes');
+  @override
+  late final GeneratedColumn<String> notes = GeneratedColumn<String>(
+    'notes',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _createdAtMeta = const VerificationMeta(
     'createdAt',
   );
@@ -43,7 +52,7 @@ class $PromptsTable extends Prompts with TableInfo<$PromptsTable, Prompt> {
     requiredDuringInsert: true,
   );
   @override
-  List<GeneratedColumn> get $columns => [id, prompt, createdAt];
+  List<GeneratedColumn> get $columns => [id, prompt, notes, createdAt];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -66,6 +75,12 @@ class $PromptsTable extends Prompts with TableInfo<$PromptsTable, Prompt> {
       );
     } else if (isInserting) {
       context.missing(_promptMeta);
+    }
+    if (data.containsKey('notes')) {
+      context.handle(
+        _notesMeta,
+        notes.isAcceptableOrUnknown(data['notes']!, _notesMeta),
+      );
     }
     if (data.containsKey('created_at')) {
       context.handle(
@@ -92,6 +107,10 @@ class $PromptsTable extends Prompts with TableInfo<$PromptsTable, Prompt> {
         DriftSqlType.string,
         data['${effectivePrefix}prompt'],
       )!,
+      notes: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}notes'],
+      ),
       createdAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}created_at'],
@@ -108,10 +127,12 @@ class $PromptsTable extends Prompts with TableInfo<$PromptsTable, Prompt> {
 class Prompt extends DataClass implements Insertable<Prompt> {
   final int id;
   final String prompt;
+  final String? notes;
   final DateTime createdAt;
   const Prompt({
     required this.id,
     required this.prompt,
+    this.notes,
     required this.createdAt,
   });
   @override
@@ -119,6 +140,9 @@ class Prompt extends DataClass implements Insertable<Prompt> {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['prompt'] = Variable<String>(prompt);
+    if (!nullToAbsent || notes != null) {
+      map['notes'] = Variable<String>(notes);
+    }
     map['created_at'] = Variable<DateTime>(createdAt);
     return map;
   }
@@ -127,6 +151,9 @@ class Prompt extends DataClass implements Insertable<Prompt> {
     return PromptsCompanion(
       id: Value(id),
       prompt: Value(prompt),
+      notes: notes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(notes),
       createdAt: Value(createdAt),
     );
   }
@@ -139,6 +166,7 @@ class Prompt extends DataClass implements Insertable<Prompt> {
     return Prompt(
       id: serializer.fromJson<int>(json['id']),
       prompt: serializer.fromJson<String>(json['prompt']),
+      notes: serializer.fromJson<String?>(json['notes']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
     );
   }
@@ -148,19 +176,27 @@ class Prompt extends DataClass implements Insertable<Prompt> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'prompt': serializer.toJson<String>(prompt),
+      'notes': serializer.toJson<String?>(notes),
       'createdAt': serializer.toJson<DateTime>(createdAt),
     };
   }
 
-  Prompt copyWith({int? id, String? prompt, DateTime? createdAt}) => Prompt(
+  Prompt copyWith({
+    int? id,
+    String? prompt,
+    Value<String?> notes = const Value.absent(),
+    DateTime? createdAt,
+  }) => Prompt(
     id: id ?? this.id,
     prompt: prompt ?? this.prompt,
+    notes: notes.present ? notes.value : this.notes,
     createdAt: createdAt ?? this.createdAt,
   );
   Prompt copyWithCompanion(PromptsCompanion data) {
     return Prompt(
       id: data.id.present ? data.id.value : this.id,
       prompt: data.prompt.present ? data.prompt.value : this.prompt,
+      notes: data.notes.present ? data.notes.value : this.notes,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
     );
   }
@@ -170,45 +206,52 @@ class Prompt extends DataClass implements Insertable<Prompt> {
     return (StringBuffer('Prompt(')
           ..write('id: $id, ')
           ..write('prompt: $prompt, ')
+          ..write('notes: $notes, ')
           ..write('createdAt: $createdAt')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, prompt, createdAt);
+  int get hashCode => Object.hash(id, prompt, notes, createdAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Prompt &&
           other.id == this.id &&
           other.prompt == this.prompt &&
+          other.notes == this.notes &&
           other.createdAt == this.createdAt);
 }
 
 class PromptsCompanion extends UpdateCompanion<Prompt> {
   final Value<int> id;
   final Value<String> prompt;
+  final Value<String?> notes;
   final Value<DateTime> createdAt;
   const PromptsCompanion({
     this.id = const Value.absent(),
     this.prompt = const Value.absent(),
+    this.notes = const Value.absent(),
     this.createdAt = const Value.absent(),
   });
   PromptsCompanion.insert({
     this.id = const Value.absent(),
     required String prompt,
+    this.notes = const Value.absent(),
     required DateTime createdAt,
   }) : prompt = Value(prompt),
        createdAt = Value(createdAt);
   static Insertable<Prompt> custom({
     Expression<int>? id,
     Expression<String>? prompt,
+    Expression<String>? notes,
     Expression<DateTime>? createdAt,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (prompt != null) 'prompt': prompt,
+      if (notes != null) 'notes': notes,
       if (createdAt != null) 'created_at': createdAt,
     });
   }
@@ -216,11 +259,13 @@ class PromptsCompanion extends UpdateCompanion<Prompt> {
   PromptsCompanion copyWith({
     Value<int>? id,
     Value<String>? prompt,
+    Value<String?>? notes,
     Value<DateTime>? createdAt,
   }) {
     return PromptsCompanion(
       id: id ?? this.id,
       prompt: prompt ?? this.prompt,
+      notes: notes ?? this.notes,
       createdAt: createdAt ?? this.createdAt,
     );
   }
@@ -234,6 +279,9 @@ class PromptsCompanion extends UpdateCompanion<Prompt> {
     if (prompt.present) {
       map['prompt'] = Variable<String>(prompt.value);
     }
+    if (notes.present) {
+      map['notes'] = Variable<String>(notes.value);
+    }
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
     }
@@ -245,6 +293,7 @@ class PromptsCompanion extends UpdateCompanion<Prompt> {
     return (StringBuffer('PromptsCompanion(')
           ..write('id: $id, ')
           ..write('prompt: $prompt, ')
+          ..write('notes: $notes, ')
           ..write('createdAt: $createdAt')
           ..write(')'))
         .toString();
@@ -266,12 +315,14 @@ typedef $$PromptsTableCreateCompanionBuilder =
     PromptsCompanion Function({
       Value<int> id,
       required String prompt,
+      Value<String?> notes,
       required DateTime createdAt,
     });
 typedef $$PromptsTableUpdateCompanionBuilder =
     PromptsCompanion Function({
       Value<int> id,
       Value<String> prompt,
+      Value<String?> notes,
       Value<DateTime> createdAt,
     });
 
@@ -290,6 +341,11 @@ class $$PromptsTableFilterComposer extends Composer<_$AppDb, $PromptsTable> {
 
   ColumnFilters<String> get prompt => $composableBuilder(
     column: $table.prompt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get notes => $composableBuilder(
+    column: $table.notes,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -317,6 +373,11 @@ class $$PromptsTableOrderingComposer extends Composer<_$AppDb, $PromptsTable> {
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get notes => $composableBuilder(
+    column: $table.notes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<DateTime> get createdAt => $composableBuilder(
     column: $table.createdAt,
     builder: (column) => ColumnOrderings(column),
@@ -337,6 +398,9 @@ class $$PromptsTableAnnotationComposer
 
   GeneratedColumn<String> get prompt =>
       $composableBuilder(column: $table.prompt, builder: (column) => column);
+
+  GeneratedColumn<String> get notes =>
+      $composableBuilder(column: $table.notes, builder: (column) => column);
 
   GeneratedColumn<DateTime> get createdAt =>
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
@@ -372,20 +436,24 @@ class $$PromptsTableTableManager
               ({
                 Value<int> id = const Value.absent(),
                 Value<String> prompt = const Value.absent(),
+                Value<String?> notes = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
               }) => PromptsCompanion(
                 id: id,
                 prompt: prompt,
+                notes: notes,
                 createdAt: createdAt,
               ),
           createCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
                 required String prompt,
+                Value<String?> notes = const Value.absent(),
                 required DateTime createdAt,
               }) => PromptsCompanion.insert(
                 id: id,
                 prompt: prompt,
+                notes: notes,
                 createdAt: createdAt,
               ),
           withReferenceMapper: (p0) => p0
