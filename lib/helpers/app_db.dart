@@ -45,7 +45,6 @@ class AppDb extends _$AppDb {
   }
 
   Future<List<Prompt>> searchPrompts(String term) {
-    print('search');
     return (select(prompts)
           ..where((t) => t.prompt.like('%$term%'))
           ..orderBy([(t) => OrderingTerm.desc(t.createdAt)]))

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:prompt_creator_flutter_app/views/prompt_creator.dart';
+import 'package:prompt_creator_flutter_app/views/view_single.dart';
 
 class PromptNavigator extends StatefulWidget {
   final Function(GlobalKey<NavigatorState>) onRoutechange;
@@ -26,11 +27,8 @@ class PromptNavigatorState extends State<PromptNavigator> {
         return MaterialPageRoute(
           settings: settings,
           builder: (BuildContext context) {
-            if (settings.name == "/details") {
-              return const PromptCreatorView();
-            }
-            if (settings.name == "/") {
-              return const PromptCreatorView();
+            if (settings.name == "/view") {
+              return const SinglePromptView();
             }
             return const PromptCreatorView();
           },

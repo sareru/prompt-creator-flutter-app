@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:prompt_creator_flutter_app/navigation/imprint_navigation.dart';
 import 'package:prompt_creator_flutter_app/navigation/list_navigation.dart';
 import 'package:prompt_creator_flutter_app/navigation/nav_item_model.dart';
 import 'package:prompt_creator_flutter_app/navigation/prompt_navigation.dart';
@@ -97,12 +96,6 @@ class MainWrapperState extends State<MainWrapper> {
                               ),
 
                               PromptListNavigator(
-                                onRoutechange: (key) {
-                                  keys.add(key);
-                                },
-                              ),
-
-                              ImprintNavigator(
                                 onRoutechange: (key) {
                                   keys.add(key);
                                 },

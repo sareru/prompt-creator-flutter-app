@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:prompt_creator_flutter_app/views/list.dart';
-import 'package:prompt_creator_flutter_app/views/prompt_creator.dart';
 import 'package:prompt_creator_flutter_app/views/view_single.dart';
 
 class PromptListNavigator extends StatefulWidget {

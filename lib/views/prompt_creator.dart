@@ -3,11 +3,11 @@ import 'dart:math';
 import 'package:drift/drift.dart' hide Column;
 import 'package:flutter/material.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
-import 'package:prompt_creator_flutter_app/gui/prompt_list.dart';
 import 'package:prompt_creator_flutter_app/helpers/app_db.dart';
 import 'package:prompt_creator_flutter_app/helpers/functions.dart';
 import 'package:prompt_creator_flutter_app/helpers/vars.dart';
 import 'package:flutter/services.dart';
+import 'package:prompt_creator_flutter_app/views/imprint.dart';
 
 class PromptCreatorView extends StatefulWidget {
   const PromptCreatorView({super.key});
@@ -17,7 +17,8 @@ class PromptCreatorView extends StatefulWidget {
 }
 
 class _PromptCreatorViewState extends State<PromptCreatorView> {
-  String prompt = "";
+  String promptText = "";
+  Prompt? prompt;
   IconData copyIcon = TablerIcons.copy;
   int _count = 0;
 
@@ -50,14 +51,29 @@ class _PromptCreatorViewState extends State<PromptCreatorView> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'Boys Love Story Prompt Creator',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: scaler.scale(32.0),
-                          color: Theme.of(context).colorScheme.onPrimary,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(padding: const EdgeInsets.all(16.0)),
+                          Expanded(
+                            child: Text(
+                              'Boys Love Story Prompt Creator',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: scaler.scale(32.0),
+                                color: Theme.of(context).colorScheme.onPrimary,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              showImprint();
+                            },
+                            icon: Icon(TablerIcons.info_circle),
+                          ),
+                        ],
                       ),
                     ),
                     GestureDetector(
@@ -86,37 +102,47 @@ class _PromptCreatorViewState extends State<PromptCreatorView> {
                         ),
                       ),
                     ),
-                    if (prompt.isNotEmpty)
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.secondary,
-                            borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(12.0),
-                            ),
-                            border: Border(
-                              left: BorderSide(
-                                color: Theme.of(context).colorScheme.onSurface,
-                                width: 16.0,
+                    if (promptText.isNotEmpty)
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(
+                            context,
+                            '/view',
+                            arguments: {'prompt': prompt},
+                          );
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.secondary,
+                              borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(12.0),
+                              ),
+                              border: Border(
+                                left: BorderSide(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurface,
+                                  width: 16.0,
+                                ),
                               ),
                             ),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              prompt,
-                              // "A skinny god and a tall sailor take turns making breakfast for each other at sunrise.",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontFamily: 'YuseiMagic',
-                                fontSize: scaler.scale(32.0),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                promptText,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontFamily: 'YuseiMagic',
+                                  fontSize: scaler.scale(32.0),
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    if (prompt.isNotEmpty)
+                    if (promptText.isNotEmpty)
                       Text(
                         'Share your prompt',
                         textScaler: scaler,
@@ -125,7 +151,7 @@ class _PromptCreatorViewState extends State<PromptCreatorView> {
                           color: Theme.of(context).colorScheme.onPrimary,
                         ),
                       ),
-                    if (prompt.isNotEmpty)
+                    if (promptText.isNotEmpty)
                       Wrap(
                         alignment: WrapAlignment.center,
                         spacing: 8.0,
@@ -135,7 +161,7 @@ class _PromptCreatorViewState extends State<PromptCreatorView> {
                           GestureDetector(
                             onTap: () {
                               String post =
-                                  "My Boys Love prompt is:\n\n\"$prompt\"\n\nGet your prompt at https://sareru.net/promptcreator/!\n#sarerusBLprompts";
+                                  "My Boys Love prompt is:\n\n\"$promptText\"\n\nGet your prompt at https://sareru.net/promptcreator/!\n#sarerusBLprompts";
                               Uri postEncoded = Uri.parse(
                                 "https://twitter.com/intent/tweet?text=$post&via=sarerunet",
                               );
@@ -166,7 +192,7 @@ class _PromptCreatorViewState extends State<PromptCreatorView> {
                           GestureDetector(
                             onTap: () {
                               String post =
-                                  "My Boys Love prompt is:\n\n\"$prompt\"\n\nGet your prompt at https://sareru.net/promptcreator/!\n#sarerusBLprompts";
+                                  "My Boys Love prompt is:\n\n\"$promptText\"\n\nGet your prompt at https://sareru.net/promptcreator/!\n#sarerusBLprompts";
                               Uri postEncoded = Uri.parse(
                                 "https://bsky.app/intent/compose?text=$post&via=sareru.net",
                               );
@@ -197,7 +223,7 @@ class _PromptCreatorViewState extends State<PromptCreatorView> {
                           GestureDetector(
                             onTap: () {
                               String post =
-                                  "My Boys Love prompt is:\n\n\"$prompt\"";
+                                  "My Boys Love prompt is:\n\n\"$promptText\"";
                               Uri postEncoded = Uri.parse(
                                 "https://www.tumblr.com/widgets/share/tool?posttype=link&caption=$post&content=https%3A%2F%2Fsareru.net%2Fpromptcreator%2F&canonicalUrl=https%3A%2F%2Fsareru.net%2Fpromptcreator%2F&tags=writers on tumblr,creative writing,writing prompt,yaoi prompt,boys love prompt",
                               );
@@ -228,7 +254,7 @@ class _PromptCreatorViewState extends State<PromptCreatorView> {
                           GestureDetector(
                             onTap: () {
                               String post =
-                                  "My Boys Love prompt is:\n\n\"$prompt\"\n\nGet your prompt at https://sareru.net/promptcreator/!";
+                                  "My Boys Love prompt is:\n\n\"$promptText\"\n\nGet your prompt at https://sareru.net/promptcreator/!";
                               Uri postEncoded = Uri.parse(
                                 "mailto:?body=$post&subject=My Boys Love Prompt",
                               );
@@ -259,7 +285,7 @@ class _PromptCreatorViewState extends State<PromptCreatorView> {
                           GestureDetector(
                             onTap: () {
                               String post =
-                                  "My Boys Love prompt is:\n\n\"$prompt\"\n\nGet your prompt at https://sareru.net/promptcreator/!\n#sarerusBLprompts";
+                                  "My Boys Love prompt is:\n\n\"$promptText\"\n\nGet your prompt at https://sareru.net/promptcreator/!\n#sarerusBLprompts";
                               Clipboard.setData(ClipboardData(text: post)).then(
                                 (value) {
                                   setState(() {
@@ -359,17 +385,29 @@ class _PromptCreatorViewState extends State<PromptCreatorView> {
     }
     newPrompt += " $promptTraitb $promptJobb $promptAction $promptPlace.";
     setState(() {
-      prompt = newPrompt;
+      promptText = newPrompt;
       hasPrevious = true;
     });
 
     final now = DateTime.now();
-    db.addPrompt(
-      PromptsCompanion(prompt: Value(newPrompt), createdAt: Value(now)),
-    );
+    db
+        .addPrompt(
+          PromptsCompanion(prompt: Value(newPrompt), createdAt: Value(now)),
+        )
+        .then(
+          (onValue) => {
+            db.getLatestPrompt().then(
+              (latestPrompt) => {
+                setState(() {
+                  prompt = latestPrompt;
+                }),
+              },
+            ),
+          },
+        );
   }
 
-  void showPreviousPrompts() {
+  void showImprint() {
     showDialog(
       context: context,
       builder: (dialogContext) => Dialog(
@@ -378,23 +416,41 @@ class _PromptCreatorViewState extends State<PromptCreatorView> {
           width: 3.0,
         ),
         backgroundColor: Theme.of(dialogContext).colorScheme.primary,
-        child: Padding(padding: const EdgeInsets.all(8.0), child: PromptList()),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ImprintView(),
+        ),
       ),
-    ).then((v) {
-      hasPreviousCheck();
-    });
+    );
   }
+
+  // void showPreviousPrompts() {
+  //   showDialog(
+  //     context: context,
+  //     builder: (dialogContext) => Dialog(
+  //       shape: Border.all(
+  //         color: Theme.of(dialogContext).colorScheme.outline,
+  //         width: 3.0,
+  //       ),
+  //       backgroundColor: Theme.of(dialogContext).colorScheme.primary,
+  //       child: Padding(padding: const EdgeInsets.all(8.0), child: PromptList()),
+  //     ),
+  //   ).then((v) {
+  //     hasPreviousCheck();
+  //   });
+  // }
 
   Future<void> hasPreviousCheck() async {
     db.getLatestPrompt().then((prompt) {
       if (prompt != null) {
         setState(() {
-          this.prompt = prompt.prompt;
+          this.prompt = prompt;
+          this.promptText = prompt.prompt;
           hasPrevious = true;
         });
       } else {
         setState(() {
-          this.prompt = "";
+          this.promptText = "";
           hasPrevious = false;
         });
       }

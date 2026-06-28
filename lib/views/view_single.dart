@@ -368,6 +368,7 @@ class _SinglePromptViewState extends State<SinglePromptView> {
                                     child: TextField(
                                       maxLines: 5,
                                       style: TextStyle(
+                                        fontFamily: 'YuseiMagic',
                                         fontSize: scaler.scale(16),
                                         color: Theme.of(
                                           context,

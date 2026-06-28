@@ -109,7 +109,6 @@ class _PromptListState extends State<PromptList> {
                             arguments: {'prompt': prompts[index]},
                           ).then((onValue) {
                             searchPrompts();
-                            print('back');
                           });
                         },
                         child: Padding(
@@ -454,6 +453,6 @@ class _PromptListState extends State<PromptList> {
   }
 
   void deleteAllPrompts() {
-    db.deleteAllPrompts();
+    db.deleteAllPrompts().then((onValue) => {searchPrompts()});
   }
 }

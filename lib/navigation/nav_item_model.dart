@@ -24,9 +24,4 @@ List<NavItemModel> bottomNavItems = [
     icon: TablerIcons.list_search,
     iconSelected: TablerIcons.list_search,
   ),
-  NavItemModel(
-    title: 'Imprint',
-    icon: TablerIcons.question_mark,
-    iconSelected: TablerIcons.question_mark,
-  ),
 ];
