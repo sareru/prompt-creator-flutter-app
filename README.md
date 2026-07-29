@@ -29,7 +29,7 @@ This app will also be available on the usual mobile app stores in the future.\
 - Seasonal prompts
 - More prompt formats
 
-If you would like to request a new feature, feel free to create an issue 👆 or send me an [email](mailto:promptcreator@sareru.net?subject=Feature%20Request).
+If you would like to request a new feature, feel free to post in discussions 👆
 
 ## Never coming feature
 
