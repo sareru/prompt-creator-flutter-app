@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ImprintView extends StatefulWidget {
   const ImprintView({super.key});
@@ -64,48 +65,62 @@ class _ImprintViewState extends State<ImprintView> {
               color: Theme.of(context).colorScheme.onPrimary,
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            spacing: 4.0,
-            children: [
-              Icon(
-                TablerIcons.at,
-                size: scaler.scale(16.0),
-                color: Theme.of(context).colorScheme.secondary,
-              ),
-              Text(
-                "dom@rottendev.net",
-                textScaler: scaler,
-                style: TextStyle(
-                  fontFamily: 'YuseiMagic',
-                  color: Theme.of(context).colorScheme.onPrimary,
+          GestureDetector(
+            onTap: () {
+              shareUrl(Uri.parse('mailto:ore@sareru.net'));
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              spacing: 4.0,
+              children: [
+                Icon(
+                  TablerIcons.at,
+                  size: scaler.scale(16.0),
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
-              ),
-            ],
+                Text(
+                  "ore@sareru.net",
+                  textScaler: scaler,
+                  style: TextStyle(
+                    fontFamily: 'YuseiMagic',
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
+                ),
+              ],
+            ),
           ),
           Padding(padding: const EdgeInsets.all(4.0)),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            spacing: 4.0,
-            children: [
-              Icon(
-                TablerIcons.world_www,
-                size: scaler.scale(16.0),
-                color: Theme.of(context).colorScheme.secondary,
-              ),
-              Text(
-                "rottendev.net",
-                textScaler: scaler,
-                style: TextStyle(
-                  fontSize: 20.0,
-                  color: Theme.of(context).colorScheme.onPrimary,
-                  fontWeight: FontWeight.bold,
+          GestureDetector(
+            onTap: () {
+              shareUrl(Uri.parse('https://sareru.net'));
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              spacing: 4.0,
+              children: [
+                Icon(
+                  TablerIcons.world_www,
+                  size: scaler.scale(16.0),
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
-              ),
-            ],
+                Text(
+                  "sareru.net",
+                  textScaler: scaler,
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
     );
+  }
+
+  Future<void> shareUrl(Uri uri) async {
+    launchUrl(uri, mode: LaunchMode.externalApplication);
   }
 }
