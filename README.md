@@ -4,7 +4,7 @@ Turning my [BL Prompt Creator](https://sareru.net/promptcreator/) for creative w
 This app will also be available on the usual mobile app stores in the future.\
 *This app in still in beta and has only been tested on iOS.*
 
-<img src="https://sareru.net/promptcreator/promo.png" alt="Promo graphic">
+<img src="https://sareru.net/promptcreator/app-sc.png" alt="Summary graphic">
 
 ## Current features
 
