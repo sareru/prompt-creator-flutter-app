@@ -91,6 +91,9 @@ class _PromptListState extends State<PromptList> {
                     onChanged: (value) async {
                       searchPrompts();
                     },
+                    onTapOutside: (event) {
+                      FocusManager.instance.primaryFocus?.unfocus();
+                    },
                     decoration: InputDecoration(hint: Text('Search prompts')),
                   ),
                 ),

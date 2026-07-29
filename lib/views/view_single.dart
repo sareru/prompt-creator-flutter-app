@@ -370,14 +370,15 @@ class _SinglePromptViewState extends State<SinglePromptView> {
                                       style: TextStyle(
                                         fontFamily: 'YuseiMagic',
                                         fontSize: scaler.scale(16),
-                                        color: Theme.of(
-                                          context,
-                                        ).colorScheme.onPrimary,
                                       ),
                                       decoration: InputDecoration(
                                         hint: Text('Notes'),
                                       ),
                                       controller: controller,
+                                      onTapOutside: (event) {
+                                        FocusManager.instance.primaryFocus
+                                            ?.unfocus();
+                                      },
                                     ),
                                   ),
                                 ),
