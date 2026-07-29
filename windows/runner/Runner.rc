@@ -93,7 +93,7 @@ BEGIN
             VALUE "FileDescription", "prompt_creator_flutter_app" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "prompt_creator_flutter_app" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2026 com.example. All rights reserved." "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2026 Dominique Bauer. All rights reserved." "\0"
             VALUE "OriginalFilename", "prompt_creator_flutter_app.exe" "\0"
             VALUE "ProductName", "prompt_creator_flutter_app" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
