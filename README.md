@@ -4,7 +4,7 @@ Turning my [BL Prompt Creator](https://sareru.net/promptcreator/) for creative w
 This app will also be available on the usual mobile app stores in the future.\
 *This app in still in beta and has only been tested on iOS.*
 
-<img src="https://sareru.net/promptcreator/app-sc.png" alt="Summary graphic">
+![Summary graphic](https://sareru.net/promptcreator/app-sc.png)
 
 ## Current features
 
@@ -15,6 +15,7 @@ This app will also be available on the usual mobile app stores in the future.\
 - Add notes to your story prompts
 - Light/dark mode
 
+![Test](https://sareru.net/promptcreator/app-dark-1.png){ width: 30% }
 <img src="https://sareru.net/promptcreator/app-dark-1.png" alt="Start page with prompt" width="250">
 <img src="https://sareru.net/promptcreator/app-dark-2.png" alt="List of prompts with filter option"  width="250">
 <img src="https://sareru.net/promptcreator/app-dark-3.png" alt="Prompt detail page with notes field" width="250">
