@@ -424,33 +424,17 @@ class _PromptCreatorViewState extends State<PromptCreatorView> {
     );
   }
 
-  // void showPreviousPrompts() {
-  //   showDialog(
-  //     context: context,
-  //     builder: (dialogContext) => Dialog(
-  //       shape: Border.all(
-  //         color: Theme.of(dialogContext).colorScheme.outline,
-  //         width: 3.0,
-  //       ),
-  //       backgroundColor: Theme.of(dialogContext).colorScheme.primary,
-  //       child: Padding(padding: const EdgeInsets.all(8.0), child: PromptList()),
-  //     ),
-  //   ).then((v) {
-  //     hasPreviousCheck();
-  //   });
-  // }
-
   Future<void> hasPreviousCheck() async {
     db.getLatestPrompt().then((prompt) {
       if (prompt != null) {
         setState(() {
           this.prompt = prompt;
-          this.promptText = prompt.prompt;
+          promptText = prompt.prompt;
           hasPrevious = true;
         });
       } else {
         setState(() {
-          this.promptText = "";
+          promptText = "";
           hasPrevious = false;
         });
       }

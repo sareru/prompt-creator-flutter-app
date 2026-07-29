@@ -17,7 +17,6 @@ class MainWrapperState extends State<MainWrapper> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // resizeToAvoidBottomInset: false,
       backgroundColor: Theme.of(context).colorScheme.outline,
       bottomNavigationBar: Padding(
         padding: EdgeInsets.fromLTRB(12.0, 12.0, 12.0, 0),

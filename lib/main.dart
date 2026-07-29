@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:prompt_creator_flutter_app/mainwrapper.dart';
-// import 'package:prompt_creator_flutter_app/views/prompt.dart';
 import 'package:prompt_creator_flutter_app/theme.dart';
 
 void main() {
@@ -19,7 +18,6 @@ class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       theme: appThemeLight,
       darkTheme: appThemeDark,
       home: MainWrapper(),

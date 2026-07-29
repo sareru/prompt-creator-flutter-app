@@ -794,7 +794,7 @@ class _SinglePromptViewState extends State<SinglePromptView> {
 
   void saveNotes() {
     Prompt updatedPrompt = prompt!.copyWith(notes: Value(controller.text));
-    db.updatePrompt(updatedPrompt).then((bool result) async {
+    db.updatePrompt(updatedPrompt).then((bool result) {
       if (!result) {
         showDialog(
           context: context,
