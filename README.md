@@ -15,7 +15,13 @@ This app will also be available on the usual mobile app stores in the future.\
 - Add notes to your story prompts
 - Light/dark mode
 
-<div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;"><img src="https://sareru.net/promptcreator/app-dark-1.png" alt="Start page with prompt"><img src="https://sareru.net/promptcreator/app-dark-2.png" alt="List of prompts with filter option"><img src="https://sareru.net/promptcreator/app-dark-3.png" alt="Prompt detail page with notes field"></div>
+<table>
+    <tr>
+        <td><img src="https://sareru.net/promptcreator/app-dark-1.png" alt="Start page with prompt"></td>
+        <td><img src="https://sareru.net/promptcreator/app-dark-2.png" alt="List of prompts with filter option"></td>
+        <td><img src="https://sareru.net/promptcreator/app-dark-3.png" alt="Prompt detail page with notes field"></td>
+    </tr>
+</table>
 
 ## Upcoming features
 
